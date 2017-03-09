@@ -1,0 +1,42 @@
+import fetch from "isomorphic-fetch";
+
+export const fetchExperiments = (experimentId) => {
+  console.log("Calling fetchExperiments");
+  return (dispatch) => {
+    return fetch("http://0.0.0.0:4000/api/Experiments/search1")
+    .then(function(response) {
+        console.log("back from fetchExperiments");
+
+        if (response.status >= 400) {
+            throw new Error("Bad response from server");
+        }
+        return response.json();
+    })
+    .then((json) => dispatch(receiveExperiment(json)));
+  };
+};
+
+export const receiveExperiment = (json) => {
+  return {
+    type: "RECEIVE_EXPERIMENT",
+    json
+  };
+};
+
+export const toggleCheck = () => {
+  return {
+    type: "TOGGLE_CHECK"
+  };
+};
+
+export const incNumber = () => {
+  return {
+    type: "INC_NUMBER"
+  };
+};
+
+export const decNumber = () => {
+  return {
+    type: "DEC_NUMBER"
+  };
+};
