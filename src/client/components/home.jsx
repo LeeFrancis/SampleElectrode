@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {toggleCheck, incNumber, decNumber} from "../actions";
 // import SplitPoint from "../abtesting/split-point";
 import { IntlProvider } from "react-intl";
+import getExperimentInstance from "../abtesting/experiment";
 import {ABTest, When, Default} from "react-experiments";
 
 class Home extends React.Component {
@@ -11,26 +12,16 @@ class Home extends React.Component {
     const props = this.props;
     const {store} = this.context;
     const {experiments} = store.getState();
+    const exp = getExperimentInstance(experiments.experiment, Math.ceil(Math.random()*10));
+    const output = exp.get("search_component") || "Not Defined";
+    
     return (
       <IntlProvider locale="en">
         <div>
           {/**/}
           <h1>Hello <a href={"https://github.com/electrode-io"}>{"Electrode"}</a></h1>
           <div>
-
-            <ABTest experiment={experiments.experiment} on='search_component'>
-              <When value='react-ref-searchbox'>
-                <strong>Reference</strong>
-              </When>
-              <When value='react-ref-searchbox'>
-                <strong>Medical</strong>
-              </When>
-              <Default>
-                <strong>UMM?>></strong>
-              </Default>
-            </ABTest>
-
-
+                <strong>{output}</strong>
           </div>
         </div>
       </IntlProvider>

@@ -9,7 +9,7 @@ import { fetchExperiments, receiveExperiment } from "../../client/actions";
 const ebscoPlanout = require("electrode-archetype-ebsco").ebscoPlanout;
 
 const Promise = require("bluebird");
-
+const ERROR_STATUS = 400;
 function createReduxStore(req, match) { // eslint-disable-line
   const initialState = {
   };
@@ -26,10 +26,15 @@ function createReduxStore(req, match) { // eslint-disable-line
 
 function getExperiments(store) {
   return new Promise((resolve) => {
-    ebscoPlanout.getExperiments("http://0.0.0.0:4000/api/Experiments/search1", Math.ceil(Math.random()*10))
-    .then((experiments) => {
-      console.log(experiments);
-      store.dispatch(receiveExperiment(experiments));
+    fetch("http://0.0.0.0:4000/api/Experiments/search1")
+    .then((response) => {
+      if (response.status >= ERROR_STATUS) {
+        throw new Error("Bad response from server");
+      }
+      return response.json();
+    })
+    .then((experiment) => {
+      store.dispatch(receiveExperiment(experiment.json));
       resolve();
     });
   });
