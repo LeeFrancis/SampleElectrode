@@ -2,26 +2,29 @@ import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 /**/
 import {toggleCheck, incNumber, decNumber} from "../actions";
-// import SplitPoint from "../abtesting/split-point";
+import SplitPoint from "../abtesting/split-point";
+import ABExperiment from "../abtesting/ab-experiment";
 import { IntlProvider } from "react-intl";
-import getExperimentInstance from "../abtesting/experiment";
-import {ABTest, When, Default} from "react-experiments";
+import ReactNavbarContainer from "../containers/academic-navbar";
 
 class Home extends React.Component {
   render() {
     const props = this.props;
     const {store} = this.context;
-    const {experiments} = store.getState();
-    const exp = getExperimentInstance(experiments.experiment, Math.ceil(Math.random()*10));
-    const output = exp.get("search_component") || "Not Defined";
     
     return (
       <IntlProvider locale="en">
+
         <div>
+          
           {/**/}
           <h1>Hello <a href={"https://github.com/electrode-io"}>{"Electrode"}</a></h1>
           <div>
-                <strong>{output}</strong>
+            <ABExperiment 
+              id="58c6aacb21500a53407f6a49"
+              name="search_component"
+              description="What search box to use?"
+            />
           </div>
         </div>
       </IntlProvider>

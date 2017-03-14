@@ -1,0 +1,62 @@
+[
+    {
+        "_id" : ObjectId("58c6aacb21500a53407f6a49"),
+        "json" : {
+            "op" : "seq",
+            "seq" : [ 
+                {
+                    "op" : "set",
+                    "var" : "search_component",
+                    "value" : {
+                        "choices" : [ 
+                            "MedicalSearch", 
+                            "AcademicSearch"
+                        ],
+                        "op" : "uniformChoice",
+                        "unit" : {
+                            "op" : "get",
+                            "var" : "id"
+                        }
+                    }
+                }
+            ]
+        },
+        "experiment" : "SearchBox Experiment"
+    },
+    {
+        "json" : {
+            "op" : "seq",
+            "seq" : [ 
+                {
+                    "op" : "set",
+                    "var" : "navbar_color",
+                    "value" : {
+                        "choices" : [ 
+                            "#cc33ff", 
+                            "#333300",
+                            "#282c34"
+                        ],
+                        "op" : "uniformChoice",
+                        "unit" : {
+                            "op" : "get",
+                            "var" : "id"
+                        }
+                    }
+                }
+            ]
+        },
+        "experiment" : "Navbar experiment with color"        
+    }
+}
+
+
+
+        <ABExperiment
+          id="58c70e0808e80285323eeb3b"
+          name="navbar_color"
+          property="color"
+          description="What color to use for navbar"
+          >
+          <ReactNavbarContainer/>
+        </ABExperiment>
+        

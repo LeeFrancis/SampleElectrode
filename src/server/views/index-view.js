@@ -17,29 +17,11 @@ function createReduxStore(req, match) { // eslint-disable-line
   const store = configureStore(initialState);
 
   const actions = [
-    store.dispatch(fetchExperiments("search1")),
-    getExperiments(store)
+    store.dispatch(fetchExperiments()),
   ];
   return Promise.all(actions).then(() => store);
 
 }
-
-function getExperiments(store) {
-  return new Promise((resolve) => {
-    fetch("http://0.0.0.0:4000/api/Experiments/search1")
-    .then((response) => {
-      if (response.status >= ERROR_STATUS) {
-        throw new Error("Bad response from server");
-      }
-      return response.json();
-    })
-    .then((experiment) => {
-      store.dispatch(receiveExperiment(experiment.json));
-      resolve();
-    });
-  });
-}
-
 
 //
 // This function is exported as the content for the webapp plugin.

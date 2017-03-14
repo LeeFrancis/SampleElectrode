@@ -1,9 +1,9 @@
 import fetch from "isomorphic-fetch";
 
-export const fetchExperiments = (experimentId) => {
+export const fetchExperiments = () => {
   console.log("Calling fetchExperiments");
   return (dispatch) => {
-    return fetch("http://0.0.0.0:4000/api/Experiments/search1")
+    return fetch("http://0.0.0.0:4000/api/Experiments")
     .then(function(response) {
         console.log("back from fetchExperiments");
 

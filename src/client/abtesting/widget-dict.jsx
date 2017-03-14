@@ -1,4 +1,5 @@
 import ExEnv from "exenv";
+import getExperimentInstance from "../abtesting/experiment";
 
 
 let MedicalSearch;
@@ -13,8 +14,9 @@ export const getRandomWidget = () => {
   return ExEnv.canUseDOM ? widgets[Math.floor(Math.random() * widgets.length)] : "";
 };
 
-export const getWidgetFromPlanout = (experiment) => {
-  return experiment &&  experiment.get ? experiment.get("search_component") : undefined;
+export const getWidgetFromPlanout = (experiments) => {
+  const exp = getExperimentInstance(experiments.experiment, Math.ceil(Math.random()*10));
+  return exp.get("search_component");
 };
 
 export const widgetDict = {

@@ -56,10 +56,12 @@ SplitPoint.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
+  const {experiments} = state;
+  
 	//const { area } = ownProps;
   const area = "Central Banner";
   const areaConfig = {
-    widget: getWidgetFromPlanout(state.experiments.fn),
+    widget: getWidgetFromPlanout(experiments),
     props: {}
   };
   const fetchWidget = widgetDict[area][areaConfig.widget] || (() => {});

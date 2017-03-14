@@ -30,6 +30,9 @@ const cacheConfig = {
   }
 };
 
+support.cssModuleHook();
+
+
 support.load()
   .then(() => {
     const config = electrodeConfippet.config;

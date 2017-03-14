@@ -1,14 +1,10 @@
 import {combineReducers} from "redux";
 
 const experiments = (store, action) => {
-  console.log(JSON.stringify(action));
   if (action.type === "RECEIVE_EXPERIMENT") {
-    console.log("BAM! DONE!");
-    return {
-      experiment: action.json
-    }
+    return action.json;
   }
-  return store || {experiment: {}};
+  return store || [];
 }
 
 const checkBox = (store, action) => {
