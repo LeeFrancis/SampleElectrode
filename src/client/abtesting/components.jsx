@@ -10,14 +10,11 @@ import React from "react";
 import MedicalSearch from "../containers/medical-search";
 import AcademicSearch from "../containers/academic-search";
 
+const dict = {
+  "MedicalSearch": <MedicalSearch/>,
+  "AcademicSearch": <AcademicSearch/>
+};
 
 export const getComponentInstance = (componentName) => {
-  switch (componentName) {
-    case "MedicalSearch":
-      return <MedicalSearch/>;
-    case "AcademicSearch":
-      return <AcademicSearch/>;
-    default:
-      return <div>Invalid Experiment</div>;
-  };
+  return dict[componentName] || <div>Invalid Experiment</div>;
 } 
