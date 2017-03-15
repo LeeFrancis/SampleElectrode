@@ -1,5 +1,7 @@
 "use strict";
 const fetch = require("isomorphic-fetch");
+const postCssImport = require("postcss-import");
+const postCssNext = require("postcss-cssnext");
 const SSRCaching = require("electrode-react-ssr-caching");
 // const ebscoPlanout = require("electrode-archetype-ebsco").ebscoPlanout;
 const planout = require("planout");
@@ -17,6 +19,15 @@ require.extensions[".css"] = () => {
   return;
 };
 
+/**
+ * Use babel register to transpile any JSX code on the fly to run
+ * in server mode, and also transpile react code to apply process.env.NODE_ENV
+ * removal to improve performance in production mode.
+ */
+support.babelRegister({
+  ignore: /node_modules\/(?!react\/)/
+});
+
 const cacheConfig = {
   components: {
     SSRCachingTemplateType: {
@@ -30,12 +41,24 @@ const cacheConfig = {
   }
 };
 
-support.cssModuleHook();
 
 
-support.load()
+support.load({
+    prepend: [
+      postCssImport,
+      postCssNext
+    ],
+    generateScopedName: "[hash:base64]"
+  })
   .then(() => {
     const config = electrodeConfippet.config;
+    support.cssModuleHook({
+      prepend: [
+        postCssImport,
+        postCssNext
+      ],
+    generateScopedName: "[hash:base64]"
+    });    
     SSRCaching.enableCaching();
     SSRCaching.setCachingConfig(cacheConfig);
     // ebscoPlanout.getExperiments("http://0.0.0.0:4000/api/Experiments/search1", Math.ceil(Math.random()*10))
