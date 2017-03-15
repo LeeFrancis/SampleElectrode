@@ -1,12 +1,9 @@
 import fetch from "isomorphic-fetch";
 
 export const fetchExperiments = () => {
-  console.log("Calling fetchExperiments");
   return (dispatch) => {
     return fetch("http://0.0.0.0:4000/api/Experiments")
     .then(function(response) {
-        console.log("back from fetchExperiments");
-
         if (response.status >= 400) {
             throw new Error("Bad response from server");
         }

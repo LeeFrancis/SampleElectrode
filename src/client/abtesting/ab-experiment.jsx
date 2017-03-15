@@ -31,7 +31,6 @@ class ABExperiment extends React.Component {
     const clonedChildren = [];
     
     const experimentVal = expInstance.get(name);
-    console.log("color is :",experimentVal);
     for (let child of arrayChildren) {
       const extendedProp = {};
       extendedProp[propKey] = experimentVal;
