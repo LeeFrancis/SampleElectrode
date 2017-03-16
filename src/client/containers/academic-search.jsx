@@ -7,6 +7,7 @@ class ReactSearchboxContainer extends React.Component {
     super(props);
 
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+    this.handleAutoCompleteSelected = this.handleAutoCompleteSelected.bind(this);
   }
 
   /* These are hooks for anyone wanting to listen for important events */
@@ -27,6 +28,10 @@ class ReactSearchboxContainer extends React.Component {
     store.dispatch(doSearch(Math.random()));
   }
 
+  handleAutoCompleteSelected(e) {
+    this.handleAutocompleteSubmitListener(e);
+  }
+
   render() {
     return (
       <ReactSearchbox 
@@ -36,6 +41,8 @@ class ReactSearchboxContainer extends React.Component {
             onChange: () => {}
           }}
         autocompleteAfter = {2}
+        onSuggestionSelected = { this.handleAutoCompleteSelected }
+        onSearchClick = { this.handleSearchSubmit }
         renderSuggestion = {(suggestion) => 
           <span>{suggestion.suggestion}</span>
         }

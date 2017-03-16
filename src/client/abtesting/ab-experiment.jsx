@@ -54,7 +54,7 @@ class ABExperiment extends React.Component {
   var args = Array.prototype.slice.call(arguments).splice(1);
   return function() {
     var allArguments = args.concat(Array.prototype.slice.call(arguments));
-    console.log('inside the function wrapper');
+    console.log('inside the function wrapper: ', allArguments);
     return func.apply(this, allArguments);
   };
 }
@@ -69,6 +69,7 @@ class ABExperiment extends React.Component {
     goals.forEach((val) => {
       passprops[val] = this.innerPartial(this.handleSuccessEvent, val);
       //passprops[val] = this.handleSuccessEvent("search event w/o details so far");
+      console.log(val)
     });
 
     if (expInstance) {

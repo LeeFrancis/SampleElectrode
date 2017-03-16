@@ -35,7 +35,7 @@ class Home extends React.Component {
               name="search_component"
               description="What search box to use?"
               testType="component"
-              goals={["listenToSearchEvent"]}
+              goals={["listenToSearchEvent","listenToAutoCompleteEvent"]}
             />
           </div>
         </div>
