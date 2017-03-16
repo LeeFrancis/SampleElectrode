@@ -16,5 +16,5 @@ const dict = {
 };
 
 export const getComponentInstance = (componentName) => {
-  return dict[componentName] || <div>Invalid Experiment</div>;
+  return dict[componentName];
 } 

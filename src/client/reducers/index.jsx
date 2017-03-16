@@ -31,8 +31,16 @@ const number = (store, action) => {
   return store || {value: 0};
 };
 
+const optimizelyJSON = (store, action) => {
+  return store || {};
+};
+
+const user = (store, action) => store || {};
+
 export default combineReducers({
   checkBox,
   number,
-  experiments  
+  experiments,
+  optimizelyJSON,
+  user
 });

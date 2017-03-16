@@ -59,4 +59,66 @@
           >
           <ReactNavbarContainer/>
         </ABExperiment>
-        
+
+
+
+
+Optimizely Example:
+
+{
+	"version": "2",
+	"projectId": "8215571919",
+	"experiments": [{
+		"status": "Paused",
+		"audienceIds": [],
+		"variations": [{
+			"id": "8214461379",
+			"key": "Carousel"
+		}, {
+			"id": "8210801966",
+			"key": "Hero"
+		}],
+		"forcedVariations": {},
+		"key": "LandingPage",
+		"layerId": "8218562707",
+		"trafficAllocation": [{
+			"entityId": "8214461379",
+			"endOfRange": 5000
+		}, {
+			"entityId": "8210801966",
+			"endOfRange": 10000
+		}],
+		"id": "8214201663"
+	}, {
+		"status": "Running",
+		"audienceIds": [],
+		"variations": [{
+			"id": "8219003170",
+			"key": "Carousel"
+		}, {
+			"id": "8226191617",
+			"key": "Hero"
+		}],
+		"forcedVariations": {},
+		"key": "LandingPageV2",
+		"layerId": "8215138153",
+		"trafficAllocation": [{
+			"entityId": "8219003170",
+			"endOfRange": 5000
+		}, {
+			"entityId": "8226191617",
+			"endOfRange": 10000
+		}],
+		"id": "8220730551"
+	}],
+	"audiences": [],
+	"groups": [],
+	"attributes": [],
+	"accountId": "8215571919",
+	"events": [{
+		"experimentIds": ["8220730551", "8214201663"],
+		"id": "8212920977",
+		"key": "search"
+	}],
+	"revision": "15"
+}  
