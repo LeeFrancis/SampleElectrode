@@ -17,7 +17,7 @@ class ABExperiment extends React.Component {
   
   constructor() {
     super();
-    //this.handleSuccessEvent = this.handleSuccessEvent.bind(this);
+    this.handleSuccessEvent = this.handleSuccessEvent.bind(this);
   }
   
   getExperimentInstance(id) {
@@ -28,16 +28,6 @@ class ABExperiment extends React.Component {
     return experiment ?
       getExperimentInstance(experiment.json, Math.ceil(Math.random()*10)):
       undefined;
-  }
-
-  /* We want to eventually make a single generic handler */
-  handleSearchSuccess(event) {
-    //event.currentTarget.getElementsByTagName("input")[0].value
-    this.handleSuccessEvent("search triggered");
-  }
-
-  handleAutoCompleteSucces(event) {
-    this.handleSuccessEvent("autocomplete triggered");
   }
 
   handleSuccessEvent(theType) {
@@ -75,14 +65,11 @@ class ABExperiment extends React.Component {
     let component = <div>Invalid Experiment</div>;
     let passprops = {};
 
-
-
     // iterate over goals
     goals.forEach((val) => {
-      //passprops[val] = this.innerPartial(this.handleSuccessEvent, val);
-      passprops[val] = this.handleSuccessEvent("search event w/o details so far");
+      passprops[val] = this.innerPartial(this.handleSuccessEvent, val);
+      //passprops[val] = this.handleSuccessEvent("search event w/o details so far");
     });
-    //passprops[goals[0]] = this.handleSearchSuccess;
 
     if (expInstance) {
       component = getComponentInstance(expInstance.get(name), passprops);
