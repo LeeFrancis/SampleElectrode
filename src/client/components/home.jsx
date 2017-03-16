@@ -2,7 +2,6 @@ import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 /**/
 import {toggleCheck, incNumber, decNumber} from "../actions";
-import SplitPoint from "../abtesting/split-point";
 import ABExperiment from "../abtesting/ab-experiment";
 import { IntlProvider } from "react-intl";
 import ReactNavbarContainer from "../containers/academic-navbar";
@@ -14,7 +13,6 @@ class Home extends React.Component {
     
     return (
       <IntlProvider locale="en">
-
         <div>
         <ABExperiment
           id="58c70e0808e80285323eeb3b"
@@ -26,7 +24,6 @@ class Home extends React.Component {
           <ReactNavbarContainer/>
         </ABExperiment>
 
-          {/**/}
           <h1>Hello <a href={"https://github.com/electrode-io"}>{"Electrode"}</a></h1>
           <div>
             <ABExperiment 
@@ -34,6 +31,7 @@ class Home extends React.Component {
               name="search_component"
               description="What search box to use?"
               testType="component"
+              defComponent="AcademicSearch"
             />
           </div>
         </div>
