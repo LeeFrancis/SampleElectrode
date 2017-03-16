@@ -30,11 +30,12 @@ class ABExperiment extends React.Component {
       undefined;
   }
 
+  /* for some reason, we are not getting very much data with the log... */
   handleSuccessEvent(theType) {
     const expInstance = this.getExperimentInstance(this.props.id);
     console.log("success event");
     // event type should be a constant
-    expInstance.logEvent(theType);
+    expInstance.logEvent(theType, {experimentid: arguments[1]});
   }
 
   componentDidMount() {
@@ -67,7 +68,7 @@ class ABExperiment extends React.Component {
 
     // iterate over goals
     goals.forEach((val) => {
-      passprops[val] = this.innerPartial(this.handleSuccessEvent, val);
+      passprops[val] = this.innerPartial(this.handleSuccessEvent, val, id);
       //passprops[val] = this.handleSuccessEvent("search event w/o details so far");
       console.log(val)
     });
