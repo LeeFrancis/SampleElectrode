@@ -11,12 +11,12 @@ import MedicalSearch from "../containers/medical-search";
 import AcademicSearch from "../containers/academic-search";
 
 
-export const getComponentInstance = (componentName) => {
+export const getComponentInstance = (componentName, props={}) => {
   switch (componentName) {
     case "MedicalSearch":
-      return <MedicalSearch/>;
+      return <MedicalSearch {...props} />;
     case "AcademicSearch":
-      return <AcademicSearch/>;
+      return <AcademicSearch {...props}/>;
     default:
       return <div>Invalid Experiment</div>;
   };

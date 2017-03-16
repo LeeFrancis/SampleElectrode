@@ -17,11 +17,12 @@ class Home extends React.Component {
 
         <div>
         <ABExperiment
-          id="58c70e0808e80285323eeb3b"
+          id="58c83e3b4abcb5385472c69f"
           name="navbar_color"
           propKey="color"
           description="What color to use for navbar"
           testType="property"
+          goals= {["listenToSearchEvent"]}
           >
           <ReactNavbarContainer/>
         </ABExperiment>
@@ -30,10 +31,11 @@ class Home extends React.Component {
           <h1>Hello <a href={"https://github.com/electrode-io"}>{"Electrode"}</a></h1>
           <div>
             <ABExperiment 
-              id="58c6aacb21500a53407f6a49"
+              id="58c829664abcb5385472c69e"
               name="search_component"
               description="What search box to use?"
               testType="component"
+              goals={["listenToSearchEvent"]}
             />
           </div>
         </div>

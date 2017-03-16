@@ -4,7 +4,22 @@ import {connect} from "react-redux";
 import {getComponentInstance} from "./components";
 import getExperimentInstance from "./experiment";
 
+
+const partial = (func) => {
+  var args = Array.prototype.slice.call(arguments).splice(1);
+  return function() {
+    var allArguments = args.concat(Array.prototype.slice.call(arguments));
+    return func.apply(this, allArguments);
+  };
+}
+
 class ABExperiment extends React.Component {
+  
+  constructor() {
+    super();
+    //this.handleSuccessEvent = this.handleSuccessEvent.bind(this);
+  }
+  
   getExperimentInstance(id) {
     const {store} = this.context;
     const {experiments} = store.getState();
@@ -14,15 +29,68 @@ class ABExperiment extends React.Component {
       getExperimentInstance(experiment.json, Math.ceil(Math.random()*10)):
       undefined;
   }
+
+  /* We want to eventually make a single generic handler */
+  handleSearchSuccess(event) {
+    //event.currentTarget.getElementsByTagName("input")[0].value
+    this.handleSuccessEvent("search triggered");
+  }
+
+  handleAutoCompleteSucces(event) {
+    this.handleSuccessEvent("autocomplete triggered");
+  }
+
+  handleSuccessEvent(theType) {
+    const expInstance = this.getExperimentInstance(this.props.id);
+    console.log("success event");
+    // event type should be a constant
+    expInstance.logEvent(theType);
+  }
+
+  componentDidMount() {
+
+  }
+
+  componentWillUnmount() {
+
+  }
+
+  componentWillReceiveProps(next) {
+    console.log("got some props: ", next);
+    
+  }
+
+  innerPartial(func) {
+  var args = Array.prototype.slice.call(arguments).splice(1);
+  return function() {
+    var allArguments = args.concat(Array.prototype.slice.call(arguments));
+    console.log('inside the function wrapper');
+    return func.apply(this, allArguments);
+  };
+}
+
   componentTest() {
-    const {name, id} = this.props;
+    const {name, id, goals} = this.props;
     const expInstance = this.getExperimentInstance(id);
     let component = <div>Invalid Experiment</div>;
+    let passprops = {};
+
+
+
+    // iterate over goals
+    goals.forEach((val) => {
+      //passprops[val] = this.innerPartial(this.handleSuccessEvent, val);
+      passprops[val] = this.handleSuccessEvent("search event w/o details so far");
+    });
+    //passprops[goals[0]] = this.handleSearchSuccess;
+
     if (expInstance) {
-      component = getComponentInstance(expInstance.get(name));
+      component = getComponentInstance(expInstance.get(name), passprops);
     }
+
     return component;
   }
+
   /* Grab all children */
   propertyTest() {
     const {children, propKey, name, id} = this.props;
@@ -59,6 +127,12 @@ ABExperiment.propTypes = {
 
 ABExperiment.contextTypes = {
   store: PropTypes.object
+}
+
+const mapStateToProps = (state) => {
+  return {
+    search: state.search
+  }
 }
 
 export default ABExperiment;

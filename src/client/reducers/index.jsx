@@ -31,8 +31,18 @@ const number = (store, action) => {
   return store || {value: 0};
 };
 
+const search = (state = [], action) => {
+  if (action.type === "DO_SEARCH") {
+    const dv = Math.random();
+    console.log(dv);
+    return Object.assign({}, state, { searchTerm: dv });
+  }
+  return state;
+};
+
 export default combineReducers({
   checkBox,
   number,
-  experiments  
+  experiments,
+  search  
 });
