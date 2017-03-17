@@ -31,18 +31,16 @@ const number = (store, action) => {
   return store || {value: 0};
 };
 
-const search = (state = [], action) => {
-  if (action.type === "DO_SEARCH") {
-    const dv = Math.random();
-    console.log(dv);
-    return Object.assign({}, state, { searchTerm: dv });
-  }
-  return state;
+const optimizelyJSON = (store, action) => {
+  return store || {};
 };
+
+const user = (store, action) => store || {};
 
 export default combineReducers({
   checkBox,
   number,
   experiments,
-  search  
+  optimizelyJSON,
+  user
 });

@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 /**/
 import {getComponentInstance} from "./components";
 import getExperimentInstance from "./experiment";
+import optimizely from "optimizely-client-sdk";
 
 
 const partial = (func) => {
@@ -14,90 +15,80 @@ const partial = (func) => {
 }
 
 class ABExperiment extends React.Component {
-  
-  constructor() {
-    super();
-    this.handleSuccessEvent = this.handleSuccessEvent.bind(this);
-  }
-  
-  getExperimentInstance(id) {
-    const {store} = this.context;
-    const {experiments} = store.getState();
-    const experiment = (experiments || []).find((exp) => exp.experimentId === id) || {};
-    // Random generator to be replaced by id...
-    return experiment ?
-      getExperimentInstance(experiment.json, Math.ceil(Math.random()*10)):
-      undefined;
-  }
 
-  /* for some reason, we are not getting very much data with the log... */
-  handleSuccessEvent(theType) {
-    const expInstance = this.getExperimentInstance(this.props.id);
-    console.log("success event");
-    // event type should be a constant
-    expInstance.logEvent(theType, {experimentid: arguments[1]});
-  }
+  experimentInstance(provider="planout"){
+    const inst = {
+      "optimizely": ()=>{
+        const {store} = this.context;
+        const {optimizelyJSON} = store.getState();
+        return optimizely.createInstance(
+          { datafile: optimizelyJSON }
+        );
+      },
+      "planout": ()=>{
+        const {id} = this.props;
+        const {store} = this.context;
+        const {experiments, user = {}} = store.getState();
+        const experiment = (experiments || []).find((exp) => exp.experimentId === id);
 
-  componentDidMount() {
-
+        // Random generator to be replaced by id...
+        return experiment ?
+          getExperimentInstance(experiment.json, user.id || Math.ceil(Math.random()*10)):
+          undefined;
+      }
+    };
+    return inst[provider]();
   }
 
-  componentWillUnmount() {
-
+  experimentGet(expInst, name, provider="planout"){
+    const inst = {
+      "optimizely": (expInst, name)=> {
+        const {prepend} = this.props;
+        const {store} = this.context;
+        const {user = {}} = store.getState();
+        const val = expInst.activate(
+          name,
+          `${user.id || Math.floor(Math.random() * 15)}`  // eslint-disable-line no-magic-numbers
+        )
+        return `${prepend || ""}${val}`;
+      }
+      ,
+      "planout": (expInst, name) => expInst.get(name)
+    };
+    return inst[provider](expInst, name);
   }
-
-  componentWillReceiveProps(next) {
-    console.log("got some props: ", next);
-    
-  }
-
-  innerPartial(func) {
-  var args = Array.prototype.slice.call(arguments).splice(1);
-  return function() {
-    var allArguments = args.concat(Array.prototype.slice.call(arguments));
-    console.log('inside the function wrapper: ', allArguments);
-    return func.apply(this, allArguments);
-  };
-}
 
   componentTest() {
-    const {name, id, goals} = this.props;
-    const expInstance = this.getExperimentInstance(id);
-    let component = <div>Invalid Experiment</div>;
-    let passprops = {};
-
-    // iterate over goals
-    goals.forEach((val) => {
-      passprops[val] = this.innerPartial(this.handleSuccessEvent, val, id);
-      //passprops[val] = this.handleSuccessEvent("search event w/o details so far");
-      console.log(val)
-    });
-
-    if (expInstance) {
-      component = getComponentInstance(expInstance.get(name), passprops);
-    }
-
-    return component;
+    const {defComponent} = this.props;
+    const {name, id, provider = "planout"} = this.props;
+    const expInstance = this.experimentInstance(provider);
+    const invalidComponent = <div>Invalid Experiment</div>;
+    const component = getComponentInstance(
+        expInstance?this.experimentGet(expInstance,name,provider):
+        defComponent);
+    return component ? component : (getComponentInstance(defComponent) || invalidComponent);
   }
 
   /* Grab all children */
   propertyTest() {
-    const {children, propKey, name, id} = this.props;
-    const expInstance = this.getExperimentInstance(id);
-    const arrayChildren = typeof children === "object" ? [children] : children;
+    const {children, propKey, name, id, provider = "planout"} = this.props;
+    const expInstance = this.experimentInstance(provider);
     const clonedChildren = [];
     
-    const experimentVal = expInstance.get(name);
-    console.log("color is :",experimentVal);
-    for (let child of arrayChildren) {
-      const extendedProp = {};
-      extendedProp[propKey] = experimentVal;
-      clonedChildren.push(React.cloneElement(
-        child, extendedProp
-      ));
+    if (expInstance){
+      const arrayChildren = typeof children === "object" ? [children] : children;
+      const experimentVal = this.experimentGet(expInstance,name,provider);
+      for (let child of arrayChildren) {
+        const extendedProp = {};
+        extendedProp[propKey] = experimentVal;
+        clonedChildren.push(React.cloneElement(
+          child, extendedProp
+        ));
+      }
     }
     return clonedChildren.length === 1 ? clonedChildren[0] : clonedChildren;
   }
+
   render() {
     const {testType} = this.props;
     const component = testType === "property" ?
