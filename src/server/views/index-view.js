@@ -15,7 +15,7 @@ const ERROR_STATUS = 400;
 function createReduxStore(req, match) { // eslint-disable-line
   const optimizelyJSON = readFileSync("optimizely.json", "utf8");
   const initialState = {
-    optimizelyJSON,
+    optimizelyJSON: JSON.parse(optimizelyJSON),
     user : {id:req.query.userId}
   };
   const store = configureStore(initialState);

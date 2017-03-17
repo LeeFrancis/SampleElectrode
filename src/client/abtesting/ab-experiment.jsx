@@ -13,7 +13,7 @@ class ABExperiment extends React.Component {
         const {store} = this.context;
         const {optimizelyJSON} = store.getState();
         return optimizely.createInstance(
-          { datafile: JSON.parse(optimizelyJSON) }
+          { datafile: optimizelyJSON }
         );
       },
       "planout": ()=>{
