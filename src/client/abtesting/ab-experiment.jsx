@@ -16,6 +16,11 @@ const partial = (func) => {
 
 class ABExperiment extends React.Component {
 
+  constructor() {
+    super();
+    this.handleSuccessEvent = this.handleSuccessEvent.bind(this);
+  }
+
   experimentInstance(provider="planout"){
     const inst = {
       "optimizely": ()=>{
@@ -39,6 +44,7 @@ class ABExperiment extends React.Component {
     };
     return inst[provider]();
   }
+  
 
   experimentGet(expInst, name, provider="planout"){
     const inst = {
@@ -58,14 +64,42 @@ class ABExperiment extends React.Component {
     return inst[provider](expInst, name);
   }
 
+  /* for some reason, we are not getting very much data with the log... */
+  handleSuccessEvent(theType) {
+    const { provider = "planout" } = this.props;
+    const expInstance = this.experimentInstance(provider);
+
+    // event type should be a constant
+    //should use something other that args collection here
+    expInstance.logEvent(theType, {experimentid: arguments[1]});
+  }
+
+  innerPartial(func) {
+    var args = Array.prototype.slice.call(arguments).splice(1);
+    return function() {
+      var allArguments = args.concat(Array.prototype.slice.call(arguments));
+      console.log('inside the function wrapper: ', allArguments);
+      return func.apply(this, allArguments);
+    }
+  }
+
   componentTest() {
     const {defComponent} = this.props;
-    const {name, id, provider = "planout"} = this.props;
+    const {name, id, provider = "planout", goals} = this.props;
     const expInstance = this.experimentInstance(provider);
     const invalidComponent = <div>Invalid Experiment</div>;
+    
+    let passprops = {};
+    // iterate over goals
+    goals.forEach((val) => {
+      passprops[val] = this.innerPartial(this.handleSuccessEvent, val, id);
+    }); 
+    
     const component = getComponentInstance(
         expInstance?this.experimentGet(expInstance,name,provider):
-        defComponent);
+        defComponent, passprops);
+       
+
     return component ? component : (getComponentInstance(defComponent) || invalidComponent);
   }
 

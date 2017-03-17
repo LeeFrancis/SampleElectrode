@@ -15,8 +15,15 @@ const dict = {
   "AcademicSearch": <AcademicSearch/>
 };
 
-export const getComponentInstance = (componentName) => {
-  return dict[componentName];
+export const getComponentInstance = (componentName, props={}) => {
+  if(dict[componentName]) {
+    const comp = React.cloneElement(dict[componentName], props);
+    return comp;
+  }
+  return null;
+}
+
+/*
 export const getComponentInstance = (componentName, props={}) => {
   switch (componentName) {
     case "MedicalSearch":
@@ -26,4 +33,5 @@ export const getComponentInstance = (componentName, props={}) => {
     default:
       return <div>Invalid Experiment</div>;
   };
-} 
+}
+  */
