@@ -37,3 +37,11 @@ export const decNumber = () => {
     type: "DEC_NUMBER"
   };
 };
+
+export const doSearch = (data) => {
+  console.log("doSearch ", data);
+  return {
+    type: "DO_SEARCH",
+    data
+  }
+}
