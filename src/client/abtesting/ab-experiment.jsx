@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {getComponentInstance} from "./components";
 import getExperimentInstance from "./experiment";
 import optimizely from "optimizely-client-sdk";
-
+import { logGoalsToMongoDB, logGoalsToOptimizely, simpleLogger } from "./loggers";
 
 const partial = (func) => {
   var args = Array.prototype.slice.call(arguments).splice(1);
@@ -37,9 +37,12 @@ class ABExperiment extends React.Component {
         const experiment = (experiments || []).find((exp) => exp.experimentId === id);
 
         // Random generator to be replaced by id...
-        return experiment ?
+        const inst = experiment ?
           getExperimentInstance(experiment.json, user.id || Math.ceil(Math.random()*10)):
           undefined;
+
+        inst.configureLogger("mongodb");  
+        return inst;
       }
     };
     return inst[provider]();
@@ -69,9 +72,14 @@ class ABExperiment extends React.Component {
     const { provider = "planout" } = this.props;
     const expInstance = this.experimentInstance(provider);
 
+    if(provider === "optimizely") {
+        expInstance.track("Search_Initiated", 123);
+    } else {
+        expInstance.logEvent(theType, {experimentid: arguments[1]});
+    }
+
     // event type should be a constant
     //should use something other that args collection here
-    expInstance.logEvent(theType, {experimentid: arguments[1]});
   }
 
   innerPartial(func) {
@@ -87,8 +95,13 @@ class ABExperiment extends React.Component {
     const {defComponent} = this.props;
     const {name, id, provider = "planout", goals} = this.props;
     const expInstance = this.experimentInstance(provider);
+
+    // super fast, super wrong way
+    if(provider === "planout") {
+      expInstance.configureLogger((provider === "planout" ? logGoalsToMongoDB : logGoalsToOptimizely));
+    }
     const invalidComponent = <div>Invalid Experiment</div>;
-    
+
     let passprops = {};
     // iterate over goals
     goals.forEach((val) => {
@@ -109,6 +122,9 @@ class ABExperiment extends React.Component {
     const expInstance = this.experimentInstance(provider);
     const clonedChildren = [];
     
+    //expInstance.configureLogger();
+    expInstance.configureLogger((provider === "planout" ? logGoalsToMongoDB : logGoalsToOptimizely));
+
     if (expInstance){
       const arrayChildren = typeof children === "object" ? [children] : children;
       const experimentVal = this.experimentGet(expInstance,name,provider);

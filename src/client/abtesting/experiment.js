@@ -1,5 +1,6 @@
 const planout = require("planout");
-const fetch = require("isomorphic-fetch");
+//const fetch = require("isomorphic-fetch");
+import  { logGoalsToMongoDB, logGoalsToOptimizely, simpleLogger } from "./loggers";
 
 /* This is the sample experiment taken from https://github.com/HubSpot/PlanOut.js/blob/master/examples/sample_planout_es5.js */
 Object.getOwnPropertyDescriptors = function getOwnPropertyDescriptors(obj) {
@@ -35,7 +36,8 @@ Function.prototype.extend = function extend(proto) {
 };
 /* End extend helper */
 
-// this would be a strategy if we have mulitple configurations
+/*
+// these should be a stratagies
 const logGoalsToMongoDB = (data) => {
   data.userid = data.inputs.userid;
   data.experimentid = data.extra_data.experimentid;
@@ -52,6 +54,13 @@ const logGoalsToMongoDB = (data) => {
     }
   );
 
+  const logGoalsToOptimizely = (data) => {
+    console.log("Logging to Optimizely: ", data);
+  }
+
+  const simpleLogger = (data) => {
+    console.log("simple goal logger", data);
+  }
 
   fetch("http://0.0.0.0:4000/api/GoalResults",{
     method: "POST",
@@ -62,11 +71,13 @@ const logGoalsToMongoDB = (data) => {
     console.log("logged goal results", rsp) 
   });
 }
+*/
 
 const getExperimentInstance = function (planoutObject, id) {
   const DemoExperiment = planout.Experiment.extend({
     setup: function() {
       this.name = "SampleExperiment";
+      this.logger = simpleLogger;
     },
     assign: function(params, args) {
       this.script = planoutObject;
@@ -82,12 +93,14 @@ const getExperimentInstance = function (planoutObject, id) {
       return interpreterInstance.inExperiment;
       
     },
-    configureLogger: function() {
+    configureLogger: function(logger) {
+      this.logger = logger;
       return;
     },
     log: function(stuff) {
+      //this.logger.log(stuff);
       console.log(stuff);
-      logGoalsToMongoDB(stuff);
+      //logGoalsToMongoDB(stuff);
     },
     getParamNames: function() {
       return this.getDefaultParamNames();

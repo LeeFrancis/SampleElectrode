@@ -24,19 +24,9 @@ class Home extends React.Component {
       <IntlProvider locale="en">
         <AboveTheFoldOnlyServerRender skip={true}>
           <div>
-          <ABExperiment
-            id="58c83e3b4abcb5385472c69f"
-            name="navbar_color"
-            propKey="color"
-            description="What color to use for navbar"
-            testType="property"
-            prepend="#"
-            provider="planout"
-            goals= {["listenToSearchEvent"]}
-            >
-            <ReactNavbarContainer/>
-          </ABExperiment>
-
+          
+          
+          
             <h1>Hello <a href={"https://github.com/electrode-io"}>{"Electrode"}</a></h1>
             <div>
               <ABExperiment 
@@ -45,7 +35,7 @@ class Home extends React.Component {
                 description="What search box to use?"
                 testType="component"
                 defComponent="AcademicSearch"
-                provider="planout"
+                provider="optimizely"
                 goals={["listenToSearchEvent","listenToAutoCompleteEvent"]}
               />
             </div>
