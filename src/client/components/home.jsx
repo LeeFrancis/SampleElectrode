@@ -31,7 +31,7 @@ class Home extends React.Component {
             <div>
               <ABExperiment 
                 id="58c829664abcb5385472c69e"
-                name="search_component"
+                name="ABTestDemo"
                 description="What search box to use?"
                 testType="component"
                 defComponent="AcademicSearch"
