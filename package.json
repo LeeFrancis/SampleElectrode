@@ -25,6 +25,11 @@
     "node": "^4.x.x || ^6.x.x",
     "npm": ">= 3.x.x"
   },
+  "optimizelyConfig": {
+    "projectId": 8289748179,
+    "authToken": "2:ZLKAY9Mx8JnXnk3WO5Q1KQomKM9zy9ScV3s7cKkyHTd-UPYeDYoY",
+    "configRefreshTime": 30000
+  },
   "scripts": {
     "start": "if test \"$NODE_ENV\" = \"production\"; then npm run prod; else gulp dev; fi",
     "test": "gulp check",

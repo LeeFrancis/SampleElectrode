@@ -14,8 +14,8 @@ class Home extends React.Component {
   render() {
     const props = this.props;
     const {store} = this.context;
-    const {planoutExperiment, user} = store.getState();
-    
+    const {optimizelyExperiment, user} = store.getState();
+
     /* Lee
           id="58c70e0808e80285323eeb3b"
           id="58c6aacb21500a53407f6a49"
@@ -26,41 +26,37 @@ class Home extends React.Component {
 
     return (
       <IntlProvider locale="en">
-        <AboveTheFoldOnlyServerRender skip={true}>
+        <AboveTheFoldOnlyServerRender skip>
           <div>
           <ABExperiment
-            id="58c70e0808e80285323eeb3b"
             name="navbar_color"
             propKey="color"
             description="What color to use for navbar"
             experimentType="property"
             prepend="#"
-            provider="planout"
-            planoutExperiment={planoutExperiment}
+            provider="optimizely"
+            optimizelyExperiment={optimizelyExperiment}
             goals= {["listenToSearchEvent"]}
             user={user}
-            planoutUrl="http://0.0.0.0:4000/api/GoalResults"
-            >
+          >
             <ReactNavbarContainer/>
           </ABExperiment>
 
             <h1>Hello <a href={"https://github.com/electrode-io"}>{"Electrode"}</a></h1>
             <div>
-              <ABExperiment 
-                id="58c6aacb21500a53407f6a49"
+              <ABExperiment
                 name="search_component"
                 description="What search box to use?"
                 experimentType="component"
                 components={{
                   "MedicalSearch": <MedicalSearch/>,
-                  "AcademicSearch": <AcademicSearch/>                  
+                  "AcademicSearch": <AcademicSearch/>
                 }}
                 defaultComponent="AcademicSearch"
-                provider="planout"
-                planoutExperiment={planoutExperiment}
-                goals={["listenToSearchEvent","listenToAutoCompleteEvent"]}
+                provider="optimizely"
+                optimizelyExperiment={optimizelyExperiment}
+                goals={["listenToSearchEvent", "listenToAutoCompleteEvent"]}
                 user={user}
-                planoutUrl="http://0.0.0.0:4000/api/GoalResults"
               />
             </div>
           </div>
@@ -75,7 +71,7 @@ Home.propTypes = {
 
 Home.contextTypes = {
   store: PropTypes.object
-}
+};
 
 const mapStateToProps = (state) => {
   return {
