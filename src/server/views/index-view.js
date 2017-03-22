@@ -12,7 +12,7 @@ function createReduxStore(req, match) { // eslint-disable-line
   const optimizelyJSON = readFileSync("optimizely.json", "utf8");
   const initialState = {
     optimizelyExperiment: JSON.parse(optimizelyJSON),
-    user: {id: req.query.userId}
+    user: {id: req.query.userId || 0}
   };
   const store = configureStore(initialState);
   const actions = [
