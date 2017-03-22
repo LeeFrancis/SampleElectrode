@@ -26,8 +26,8 @@
     "npm": ">= 3.x.x"
   },
   "optimizelyConfig": {
-    "projectId": 8289748179,
-    "authToken": "2:ZLKAY9Mx8JnXnk3WO5Q1KQomKM9zy9ScV3s7cKkyHTd-UPYeDYoY",
+    "projectId": 8215571919,
+    "authToken": "2:707e2328PwgVPboAAsGxTYFNkI5G2nXi4rbA5-MdYgP8ktoJd4k",
     "configRefreshTime": 30000
   },
   "scripts": {
