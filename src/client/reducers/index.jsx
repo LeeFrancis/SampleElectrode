@@ -35,7 +35,12 @@ const optimizelyJSON = (store, action) => {
   return store || {};
 };
 
-const user = (store, action) => store || {};
+const user = (store, action) => store || {
+  if(action.type === "STORE_USER") {
+    return action.data;
+  }
+  return store || {};
+};
 
 export default combineReducers({
   checkBox,
