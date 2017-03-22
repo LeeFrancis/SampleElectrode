@@ -5,6 +5,7 @@ import {getComponentInstance} from "./components";
 import getExperimentInstance from "./experiment";
 import optimizely from "optimizely-client-sdk";
 import { logGoalsToMongoDB, logGoalsToOptimizely, simpleLogger } from "./loggers";
+import { storeUser, receiveExperiment, incNumber } from "../actions";
 
 const partial = (func) => {
   var args = Array.prototype.slice.call(arguments).splice(1);
@@ -16,9 +17,25 @@ const partial = (func) => {
 
 class ABExperiment extends React.Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.handleSuccessEvent = this.handleSuccessEvent.bind(this);
+  }
+
+  getCurrentUser() {
+    const {store} = this.context;
+    const {user = {}} = store.getState();
+
+    console.log(typeof receiveExperiment);
+    console.log(typeof incNumber);
+    console.log(typeof storeUser);
+
+    if(!user.id) {
+      user.id = Math.ceil(Math.random() * 10);
+      store.dispatch(storeUser(user));
+    }
+
+    return user;
   }
 
   experimentInstance(provider="planout"){
@@ -35,7 +52,8 @@ class ABExperiment extends React.Component {
       "planout": ()=>{
         const {id} = this.props;
         const {store} = this.context;
-        const {experiments, user = {}} = store.getState();
+        const {experiments} = store.getState();
+        const user = this.getCurrentUser();
         const experiment = (experiments || []).find((exp) => exp.experimentId === id);
 
         // Random generator to be replaced by id...
@@ -56,10 +74,11 @@ class ABExperiment extends React.Component {
       "optimizely": (expInst, name)=> {
         const {prepend} = this.props;
         const {store} = this.context;
-        const {user = {}} = store.getState();
+        const user = this.getCurrentUser();
+
         const val = expInst.activate(
           name,
-          `${user.id || Math.floor(Math.random() * 15)}`  // eslint-disable-line no-magic-numbers
+          `${user.id}`  // eslint-disable-line no-magic-numbers
         )
         return `${prepend || ""}${val}`;
       }
@@ -73,9 +92,10 @@ class ABExperiment extends React.Component {
   handleSuccessEvent(theType) {
     const { provider = "planout" } = this.props;
     const expInstance = this.experimentInstance(provider);
+    const user = this.getCurrentUser();
 
     if(provider === "optimizely") {
-        expInstance.track("Search_Initiated", 123);
+        expInstance.track("Search_Initiated", `${user.id}`);
     } else {
         expInstance.logEvent(theType, {experimentid: arguments[1]});
     }
@@ -154,17 +174,18 @@ class ABExperiment extends React.Component {
   }
 }
 
-ABExperiment.propTypes = {
-};
+//ABExperiment.propTypes = {
+//  storeUser: PropTypes.func
+//}
 
 ABExperiment.contextTypes = {
   store: PropTypes.object
 }
 
-const mapStateToProps = (state) => {
-  return {
-    search: state.search
-  }
-}
+//const mapStateToProps = (state) => {
+//  return {
+//    search: state.search
+//  }
+//}
 
 export default ABExperiment;

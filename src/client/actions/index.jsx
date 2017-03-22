@@ -20,6 +20,13 @@ export const receiveExperiment = (json) => {
   };
 };
 
+export const storeUser = (data) => {
+  return {
+    type: "STORE_USER",
+    data: data
+  };
+};
+
 export const toggleCheck = () => {
   return {
     type: "TOGGLE_CHECK"
