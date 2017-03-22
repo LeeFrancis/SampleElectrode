@@ -45,7 +45,7 @@ class Home extends React.Component {
             <h1>Hello <a href={"https://github.com/electrode-io"}>{"Electrode"}</a></h1>
             <div>
               <ABExperiment
-                name="search_component"
+                name="ABTestDemo"
                 description="What search box to use?"
                 experimentType="component"
                 components={{
