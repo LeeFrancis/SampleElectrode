@@ -1,6 +1,6 @@
 import {combineReducers} from "redux";
 
-const experiments = (store, action) => {
+const planoutExperiment = (store, action) => {
   if (action.type === "RECEIVE_EXPERIMENT") {
     return action.json;
   }
@@ -31,7 +31,7 @@ const number = (store, action) => {
   return store || {value: 0};
 };
 
-const optimizelyJSON = (store, action) => {
+const optimizelyExperiment = (store, action) => {
   return store || {};
 };
 
@@ -40,7 +40,7 @@ const user = (store, action) => store || {};
 export default combineReducers({
   checkBox,
   number,
-  experiments,
-  optimizelyJSON,
+  planoutExperiment,
+  optimizelyExperiment,
   user
 });
