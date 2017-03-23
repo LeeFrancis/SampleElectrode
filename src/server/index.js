@@ -65,9 +65,13 @@ support.load({
     //   require("./express-server")(config);  // eslint-disable-line
     // });
 
-    optimizely.getOptimizelyConfig();
-    require("./express-server")(config);  // eslint-disable-line
-  });
+    optimizely.getOptimizelyConfig(
+      8215571919,
+      "Bearer 2:707e2328PwgVPboAAsGxTYFNkI5G2nXi4rbA5-MdYgP8ktoJd4k"
+    ).then(() => {
+      require("./express-server")(config);  // eslint-disable-line
+    })  
+});
 
 
 

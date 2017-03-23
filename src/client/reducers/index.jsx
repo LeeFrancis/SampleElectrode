@@ -29,7 +29,12 @@ const optimizelyExperiment = (store) => {
   return store || {};
 };
 
-const user = (store) => store || {};
+const user = (store, action) => {
+  if(action.type === "STORE_USER") {
+    return action.data;
+  }
+  return store || {};
+};
 
 export default combineReducers({
   checkBox,

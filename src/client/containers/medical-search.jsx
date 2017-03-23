@@ -36,7 +36,7 @@ class ReactSearchboxContainer extends React.Component {
 
     this.handleSearchSubmitListener(e);
 
-    store.dispatch(doSearch(Math.random()));
+    //store.dispatch(doSearch(Math.random()));
   }
 
   render() {

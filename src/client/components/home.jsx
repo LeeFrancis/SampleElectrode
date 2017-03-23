@@ -1,7 +1,7 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 /**/
-import {toggleCheck, incNumber, decNumber} from "../actions";
+import {toggleCheck, incNumber, decNumber, storeUser} from "../actions";
 import { IntlProvider } from "react-intl";
 import ReactNavbarContainer from "../containers/academic-navbar";
 import { AboveTheFoldOnlyServerRender } from "above-the-fold-only-server-render";
@@ -11,10 +11,27 @@ import MedicalSearch from "../containers/medical-search";
 import AcademicSearch from "../containers/academic-search";
 
 class Home extends React.Component {
+  
+  /* fake a user */
+  getCurrentUser() {
+      const {store} = this.context;
+      const {user = {}} = store.getState();
+
+      if(!user.id) {
+        user.id = `user_${Math.ceil(Math.random() * 10)}`;
+        store.dispatch(storeUser(user));
+      }
+
+      return user;
+    }
+  
   render() {
     const props = this.props;
     const {store} = this.context;
-    const {optimizelyExperiment, user} = store.getState();
+    const {optimizelyExperiment } = store.getState();
+    const user = this.getCurrentUser();
+
+     
 
     /* Lee
           id="58c70e0808e80285323eeb3b"

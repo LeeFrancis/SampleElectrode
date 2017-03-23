@@ -16,10 +16,17 @@ export const decNumber = () => {
   };
 };
 
+export const storeUser = (data) => {
+  return {
+    type: "STORE_USER",
+    data: data
+  };
+};
+
 export const doSearch = (data) => {
   console.log("doSearch ", data);
   return {
     type: "DO_SEARCH",
     data
-  }
-}
+  };
+};

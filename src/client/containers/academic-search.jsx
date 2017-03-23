@@ -25,7 +25,7 @@ class ReactSearchboxContainer extends React.Component {
   handleSearchSubmit (e) {
     const { store } = this.context;
     this.handleSearchSubmitListener(e);
-    store.dispatch(doSearch(Math.random()));
+    //store.dispatch(doSearch(Math.random()));
   }
 
   handleAutoCompleteSelected(e) {
