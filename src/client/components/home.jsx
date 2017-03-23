@@ -25,12 +25,21 @@ class Home extends React.Component {
       return user;
     }
   
+  getHandlerConversionMap() {
+    const map = new Map();
+
+    map.set("listenToSearchEvent", "Search_Initiated");
+    map.set("listenToAutoCompleteEvent","Autocomplete_Selected");
+
+    return map;
+  }
+
   render() {
     const props = this.props;
     const {store} = this.context;
     const {optimizelyExperiment } = store.getState();
     const user = this.getCurrentUser();
-
+    const map = this.getHandlerConversionMap();
      
 
     /* Lee
@@ -53,7 +62,7 @@ class Home extends React.Component {
             prepend="#"
             provider="optimizely"
             optimizelyExperiment={optimizelyExperiment}
-            goals= {["listenToSearchEvent"]}
+            goals= { map }
             user={user}
           >
             <ReactNavbarContainer/>
@@ -72,7 +81,7 @@ class Home extends React.Component {
                 defaultComponent="AcademicSearch"
                 provider="optimizely"
                 optimizelyExperiment={optimizelyExperiment}
-                goals={["listenToSearchEvent", "listenToAutoCompleteEvent"]}
+                goals={ map }
                 user={user}
               />
             </div>
